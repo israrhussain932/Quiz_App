@@ -5,7 +5,7 @@
 
 // set the color of correct answer
 
-const  Color correct = Color(0xFFFFFFFF);
+const  Color correct = Color(0xFF40984C);
 
 // set the color of incorrect answer
 
@@ -19,3 +19,5 @@ const   Color incorrect = Color(0xFFFF0000);
  const Color  background  = Color(0xFF03055C);
 //  set  texts colors
  const Color   texts = Color(0xFFFFFFF9);
+
+
