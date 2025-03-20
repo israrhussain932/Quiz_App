@@ -14,15 +14,20 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<Question> _question = [
+  final List<Question> _question = [
     Question(
         id: "10",
-        title: 'what is 2+2?',
-        option: {'5': false, "30": false, '4': true, "10": false}),
+        title: 'International Women’s Day is celebrated each year on_____________?',
+        option: {'5 feb': false, "22 january": false, '8 march': true, "10 june": false}),
     Question(
         id: "11",
-        title: 'what is 10+20?',
-        option: {'5': false, "45": false, '30': true, "10": false})
+        title: 'Which two countries agreed to boost intelligence sharing during high-level security talks on February 5th 2025?',
+        option: {'Pakistan and Russia': false, "China and India":false, 'pakistan and united state': false, "pakistan and china": true}),
+    Question(
+        id: "12",
+        title: 'NATO was formed in',
+        option: {'1949': true, "1960": false, '1940': false, "1966": false})
+
   ];
   int index = 0;
 
