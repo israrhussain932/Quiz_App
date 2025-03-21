@@ -1,23 +1,40 @@
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:quizapp/Authentication/screens/login/login_widgets/password_field.dart';
 import 'package:quizapp/Authentication/screens/login/login_widgets/remember_me_checkbox.dart';
+import 'package:quizapp/Authentication/screens/signup/Signup_screen.dart';
 import 'package:quizapp/Authentication/screens/signup/Singup_widget/signin_button.dart';
 import 'package:quizapp/Authentication/screens/signup/Singup_widget/signup_button.dart';
 import 'package:quizapp/Authentication/screens/signup/Singup_widget/text_button.dart';
 import 'package:quizapp/Authentication/screens/signup/Singup_widget/text_field.dart';
 import 'package:quizapp/model/constants.dart';
-
+import 'package:quizapp/screens/home_screen.dart';
 class LoginScreen extends StatefulWidget {
    LoginScreen({super.key});
-
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
-
 class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _rememberMe = false;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  void SignIn() async {
+    try {
+   final result=   await _auth.signInWithEmailAndPassword(
+          email: _emailController.text, password: _passwordController.text);
+
+
+     Navigator.push(
+         context, MaterialPageRoute(builder: (context) => HomeScreen(),));
+
+    }on FirebaseAuthException  catch( e){
+      print('login field');
+    }
+
+  }
 
 
 
@@ -62,14 +79,35 @@ class _LoginScreenState extends State<LoginScreen> {
                   });
                 },
                 ),
-            SignupButton(title: 'Sign in'),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blueAccent,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                child: Text('Sign In',style: TextStyle(color: texts),),
+                onPressed: () {
+                  print('Button pressed');
+                  SignIn();
+                },
+              ),
+            ),
+
             SizedBox(height: 10,),
             SignInButton(
               btnText: 'Sign in with google',
               btnImage: 'assets/images/google_ic.png',
             ),
             SizedBox(height: 20,),
-            NewWidget(title: "Sign in", subTitle: 'Don,t have an account')
+            NewWidget(title: "Sign Up", subTitle: 'Don,t have an account',onTap: ()=>{
+            Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => SignUpScreen()),
+            )
+            },)
            ]
             )
         ),

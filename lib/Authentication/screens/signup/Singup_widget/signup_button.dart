@@ -8,18 +8,16 @@ class SignupButton extends StatelessWidget {
     super.key,
     required this.title,
   });
-
   final String title;
-
   @override
   Widget build(BuildContext context) {
     return SizedBox(
         width: double.infinity,
         child: ElevatedButton(
             onPressed: () {
-              Navigator.pushReplacement(
+              Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) =>  HomeScreen ()),
+                MaterialPageRoute(builder: (context) => HomeScreen()),
               );
             },
             style: ElevatedButton.styleFrom(

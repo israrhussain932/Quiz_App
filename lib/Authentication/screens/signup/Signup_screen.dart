@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:quizapp/Authentication/screens/login/login_screen.dart';
 import 'package:quizapp/Authentication/screens/signup/Singup_widget/signin_button.dart';
 import 'package:quizapp/Authentication/screens/signup/Singup_widget/signup_button.dart';
 import 'package:quizapp/Authentication/screens/signup/Singup_widget/text_button.dart';
@@ -13,9 +16,38 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  final TextEditingController _usernameController = TextEditingController();
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+
+  @override
+
+  final FirebaseAuth _auth = FirebaseAuth.instance; // Fixed class name
+  final FirebaseFirestore _firestore =FirebaseFirestore.instance;
+
+  @override
+  void signUp() async  {
+    try {
+      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+          email: _emailController.text,
+          password: _passwordController.text);
+
+      await _firestore.collection('users').doc(userCredential.user!.uid).set({
+        'uid': userCredential.user!.uid,
+        'username': _usernameController.text,
+        'email': _emailController.text,
+
+      });
+
+    } catch (e){
+      print(e);
+
+    }
+
+
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -82,14 +114,31 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   SizedBox(
                     height: 20,
                   ),
-                  SignupButton(title: 'Sign up'),
-                  SizedBox(height: 10,),
-                  SignInButton(
-                    btnText: 'Sign in with google',
-                    btnImage: 'assets/images/google_ic.png',
+
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blueAccent,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      child: Text('Sign up',style: TextStyle(color: texts),),
+                      onPressed: () {
+                        print('Button pressed');
+                        signUp();
+                      },
                     ),
+                  ),
+
                   SizedBox(height: 15,),
-                  NewWidget(title: 'login', subTitle: 'Already have an account?',),
+                  NewWidget(title: 'login', subTitle: 'Already have an account?',onTap: ()=>{
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => LoginScreen()),
+                    )
+                  },),
                 ],
               ),
               ),
